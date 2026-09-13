@@ -1,0 +1,64 @@
+{
+  "name": "browser-pdf",
+  "version": "0.1.0",
+  "description": "Read, edit and write PDFs entirely in the browser — merge, split, rotate, compress, sign, OCR, and convert to Word or Excel. No server, no upload, no network call carrying the document.",
+  "keywords": [
+    "pdf",
+    "browser",
+    "client-side",
+    "privacy",
+    "offline",
+    "merge-pdf",
+    "split-pdf",
+    "compress-pdf",
+    "pdf-to-word",
+    "pdf-to-excel",
+    "ocr",
+    "webassembly",
+    "no-upload"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@cantoo/pdf-lib": "^2.7.1"
+  },
+  "peerDependencies": {
+    "pdfjs-dist": ">=4",
+    "tesseract.js": ">=5",
+    "xlsx": ">=0.18",
+    "docx": ">=8",
+    "marked": ">=12"
+  },
+  "peerDependenciesMeta": {
+    "pdfjs-dist": { "optional": true },
+    "tesseract.js": { "optional": true },
+    "xlsx": { "optional": true },
+    "docx": { "optional": true },
+    "marked": { "optional": true }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
