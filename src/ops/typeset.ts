@@ -33,6 +33,17 @@ export interface TypesetOptions {
   title?: string;
   /** Page margin in points. Default DEFAULT_MARGIN (72 = 1in). */
   marginPt?: number;
+  /**
+   * PDF metadata Producer / Creator.
+   *
+   * Defaults to this library's name, NOT to whoever happens to be maintaining
+   * it. Stamping a fixed brand into every document a consumer generates would
+   * put a stranger's domain in the metadata of their client's deliverables,
+   * which is a good reason never to adopt a library — set these to your own
+   * product, or to '' to leave both unset.
+   */
+  producer?: string;
+  creator?: string;
 }
 
 // ——— layout constants ————————————————————————————————————————————————————
@@ -594,8 +605,10 @@ export async function typesetBlocks(blocks: DocBlock[], opts: TypesetOptions = {
   const [pageW, pageH] = PAGE_SIZES[opts.pageSize ?? 'a4'];
   const doc = await PDFDocument.create();
   if (opts.title) doc.setTitle(opts.title);
-  doc.setProducer('7busyboss PDF engine');
-  doc.setCreator('7busyboss.com');
+  const producer = opts.producer ?? 'browser-pdf';
+  const creator = opts.creator ?? 'browser-pdf';
+  if (producer) doc.setProducer(producer);
+  if (creator) doc.setCreator(creator);
 
   const { fonts, clean } = await makeFonts(doc, blocks);
   const cur = new Cursor(doc, pageW, pageH, opts.marginPt ?? DEFAULT_MARGIN);

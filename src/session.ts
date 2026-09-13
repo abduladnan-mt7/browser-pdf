@@ -58,25 +58,37 @@ export async function openPdf(
  */
 export async function addSource(
   session: PdfSession,
-  input: { name: string; bytes: Uint8Array; mime: string },
+  // `name` and `mime` are optional because a library caller often has nothing
+  // but bytes — from a fetch, a clipboard paste, another tool's output — and
+  // should not have to invent a filename and a MIME type to get started. When
+  // they are absent the type is sniffed from the bytes themselves, which is
+  // more reliable than either anyway: a file called .pdf is frequently not one.
+  input: { name?: string; bytes: Uint8Array; mime?: string },
   askPassword?: AskPassword,
 ): Promise<PdfSource> {
-  const isPdf = input.mime === 'application/pdf' || /\.pdf$/i.test(input.name);
+  const sniffedPdf =
+    input.bytes.length > 4 &&
+    input.bytes[0] === 0x25 && input.bytes[1] === 0x50 &&
+    input.bytes[2] === 0x44 && input.bytes[3] === 0x46; // "%PDF"
+  const name = input.name ?? (sniffedPdf ? 'document.pdf' : 'image');
+  const isPdf = input.mime
+    ? input.mime === 'application/pdf'
+    : sniffedPdf || /\.pdf$/i.test(name);
   let pageCount = 1;
   let password: string | undefined;
 
   if (isPdf) {
-    const opened = await openPdf(input.bytes, input.name, askPassword);
+    const opened = await openPdf(input.bytes, name, askPassword);
     pageCount = opened.doc.getPageCount();
     password = opened.password;
   }
 
   const source: PdfSource = {
     id: newId('s'),
-    name: input.name,
+    name,
     kind: isPdf ? 'pdf' : 'image',
     bytes: input.bytes,
-    mime: input.mime,
+    mime: input.mime ?? (isPdf ? "application/pdf" : "application/octet-stream"),
     pageCount,
     password,
   };

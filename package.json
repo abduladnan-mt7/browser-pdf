@@ -36,7 +36,8 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "tsx test/smoke.ts"
   },
   "dependencies": {
     "@cantoo/pdf-lib": "^2.7.1"
@@ -49,16 +50,31 @@
     "marked": ">=12"
   },
   "peerDependenciesMeta": {
-    "pdfjs-dist": { "optional": true },
-    "tesseract.js": { "optional": true },
-    "xlsx": { "optional": true },
-    "docx": { "optional": true },
-    "marked": { "optional": true }
+    "pdfjs-dist": {
+      "optional": true
+    },
+    "tesseract.js": {
+      "optional": true
+    },
+    "xlsx": {
+      "optional": true
+    },
+    "docx": {
+      "optional": true
+    },
+    "marked": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=18"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
   }
 }
