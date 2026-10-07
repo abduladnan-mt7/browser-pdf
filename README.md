@@ -76,6 +76,19 @@ Nothing is fetched because you imported the package — loaders run the first ti
 a feature that needs them is used. Everything else (merge, split, rotate,
 compress, typeset, table detection) works with no configuration at all.
 
+A few features import an optional peer the first time they run. Install the
+ones you use:
+
+| Feature | Install |
+|---|---|
+| Rendering, text extraction, PDF to Word/Excel | `pdfjs-dist` |
+| OCR | `tesseract.js` |
+| PDF to Word | `docx` |
+| PDF to Excel | `xlsx` |
+| Markdown to PDF | `marked` |
+| Several outputs as one `.zip` | `jszip` |
+| Typesetting non-Latin text | `@pdf-lib/fontkit` |
+
 ## Converting to Word and Excel
 
 ```ts
